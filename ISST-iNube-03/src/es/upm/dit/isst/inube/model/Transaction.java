@@ -10,14 +10,57 @@ public class Transaction {
 	@Id
 	private int invoice;
 	private double amount;
-	private String date;
+	private String month;
+	private String day;
 	private int client;
 	private String time;
-
-	@ManyToOne
-	private TPV tpv;
+	private String sex;
+	private String age;
+	private String zipCode;
 	
+	@ManyToOne
+	private TPV tpv;	
+
 	public Transaction() {}
+	
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
+	}
+	
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
 	
 	public int getInvoice() {
 		return invoice;
@@ -33,14 +76,6 @@ public class Transaction {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
 	}
 
 	public int getClient() {

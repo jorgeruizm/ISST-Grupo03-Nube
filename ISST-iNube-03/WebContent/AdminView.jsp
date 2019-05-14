@@ -25,7 +25,8 @@
 				<th>Nombre</th>
 				<th>Email</th>
 				<th>Rol</th>
-				<th>Acción requerida</th>
+				<th>Cambiar rol</th>
+				<th>Eliminar usuario</th>
 			</tr>
 			<c:forEach items="${user_list}" var="user_i">
 				<tr>
@@ -34,7 +35,7 @@
 					<td>${user_i.role }</td>
 					<td><form action="ChangeRoleServlet" method="post">
 							<input type="hidden" name="email" value="${user_i.email}" />
-							<button type="submit">Cambiar Rol</button>
+							<button type="submit">Cambiar rol</button>
 					</form></td>
 					<td><form action="DeleteUserServlet" method="post">
 							<input type="hidden" name="email" value="${user_i.email}" />

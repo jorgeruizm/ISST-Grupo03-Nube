@@ -21,14 +21,21 @@ public class ChangeRoleServlet extends HttpServlet {
 
 		UserDAO udao = UserDAOImplementation.getInstance();
 		User user = udao.read( email );
-
-		if(user.getRole() == "basic") {
+		System.out.println("1");
+		System.out.println(user.getRole());
+		if(user.getRole().equals("basic")) {
+			System.out.println("2p");
 			user.setRole("premium");
 		} else {
+			System.out.println("2b");
 			user.setRole("basic");
 		}
+		System.out.println("3");
+		System.out.println(user.getRole());
 		udao.update(user);
 			
-		getServletContext().getRequestDispatcher( "/AdminView.jsp" ).forward( req, resp );
+
+		resp.sendRedirect( req.getContextPath() + "/AdminServlet");
+//		getServletContext().getRequestDispatcher( "/AdminView.jsp" ).forward( req, resp );
 	}
 }

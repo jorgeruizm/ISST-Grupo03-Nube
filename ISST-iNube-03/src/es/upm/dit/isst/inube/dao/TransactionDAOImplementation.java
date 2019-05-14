@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import es.upm.dit.isst.inube.model.TPV;
 import es.upm.dit.isst.inube.model.Transaction;
 
 public class TransactionDAOImplementation implements TransactionDAO {
@@ -88,6 +89,24 @@ public class TransactionDAOImplementation implements TransactionDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			session.close();
+		}
+		return transactions;
+	}
+	
+	@Override
+	public List<Transaction> totalAmount(String date) {
+		List<Transaction> transactions = new ArrayList<>();
+		Session session = SessionFactoryService.get().openSession();
+		try {
+			session.beginTransaction();
+			transactions.addAll( session.createQuery("select e from transaction e where e.date = :date")
+					.setParameter("date", date).list());
+			session.getTransaction().commit();
+			
+		} catch (Exception e) {
+			
+		}finally {
 			session.close();
 		}
 		return transactions;

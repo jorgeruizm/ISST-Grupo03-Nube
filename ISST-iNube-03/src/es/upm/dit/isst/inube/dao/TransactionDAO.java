@@ -2,6 +2,7 @@ package es.upm.dit.isst.inube.dao;
 
 import java.util.List;
 
+import es.upm.dit.isst.inube.model.TPV;
 import es.upm.dit.isst.inube.model.Transaction;
 
 public interface TransactionDAO {
@@ -11,5 +12,6 @@ public interface TransactionDAO {
 	public void update(Transaction transaction);
 	public void delete(Transaction transaction);
 	public List<Transaction> readAll();
+	public List<Transaction> totalAmount(String date);
 	
 }

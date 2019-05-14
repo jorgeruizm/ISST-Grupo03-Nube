@@ -1,269 +1,613 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
+<!doctype html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>iNube</title>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/main.css">
+	<title>Dashboard</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="css/animate.min.css" rel="stylesheet"/>
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet"/>
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="assets/css/demo.css" rel="stylesheet" />
+
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+
 </head>
 <body>
-<div id="container">
 
-    <div id="header">
-        <div id="title">
-            <a>iNube</a>
-            <img src="images/logo2.png">
-        </div>
-        
-     <div id="navBar">
-            <div class="navBarItem"><a href="BasicServlet?email=${user.email }">Mis gráficas</a></div>
-            <div class="navBarItem"><a href="ComparativaView.jsp">Comparativa mercado</a></div>
-            
-            <div class="navBarItem"><a href="ProfileServlet?email=${user.email }">Mi Perfil</a></div>	
-            <div class="navBarItem"><a href="LogoutView.jsp">Logout</a></div>
-        </div>
+<div class="wrapper">
+    <div class="sidebar" data-color="blue">
+
+    <!--
+
+        Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+        Tip 2: you can also add an image using data-image tag
+
+    -->
+
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a class="simple-text">
+                    iNUBE
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li class="active">
+                    <a href="BasicServlet?email=${user.email}">
+                        <i class="pe-7s-graph"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <shiro:hasRole name="premium"><li>
+                    <a href="PremiumServlet?email=${user.email}">
+                        <i class="pe-7s-graph"></i>
+                        <p>Comparativa</p>
+                    </a>
+                </li></shiro:hasRole>
+                <li>
+                    <a href="ProfileServlet?email=${user.email }">
+                        <i class="pe-7s-user"></i>
+                        <p>Mi Perfil</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="TableServlet?terminal=${user.business.tpv.id}">
+                        <i class="pe-7s-note2"></i>
+                        <p>Table List</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
     </div>
 
+    <div class="main-panel">
+        <nav class="navbar navbar-default navbar-fixed">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <img src="images/logo2.png">
 
-    <div id="front2">
-        <span class="nTitle">Filtrar por fecha</span>
-        <table class="filtro">
-            <tr>
-                <th>Inicio:</th>
-                <td><input type="text" class="datepicker"></td>
-            </tr>
-            <tr>
-                <th>Final:</th>
-                <td><input type="text" class="datepicker"></td>
-            </tr>
-        </table>
-        <tr>
-            <th>
-                <form id="loginF" action="BasicServlet" method="post">
-                <button id="nButton2" action="submit">Filtrar</button></th>
-                </form>
-            </th>
-        </tr>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="LogoutView.jsp?email=${user.email }">
+                                <p>Log out</p>
+                            </a>
+                        </li>
+						<li class="separator hidden-lg"></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12"> 
+                        <div class="card">
+
+                            <div id="grafica3">
+                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                    </script>
+                                    <script type="text/javascript">
+                                        google.charts.load('current', {packages: ['corechart']});
+                                    </script>
+                                    
+                                   
+
+                            </div>
+                                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                                <script language="JavaScript" type="text/javascript">
+                                
+                                $(document).ready(function(){
+                                    $.ajax({
+                                        url: 'DataServlet',
+                                        data: {
+                                            type: 'dia',
+                                            tpv: '${user.business.tpv.id}'
+                                        },
+                                        method: 'GET',
+                                        success: function (response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var data = [
+                                                ['Dia', 'Importe']
+                                            ]
+                                            for (var i = 0; i < Object.keys(response).length; i++) {
+                                                data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                                console.log(data)
+                                            }               
+                                            function drawChart3() {
+                                                // Define the chart to be drawn.
+                                                var data3 = google.visualization.arrayToDataTable(data);
+                                            
+                                                var options = {title: 'Ingresos por día',
+                                                legend: {position: 'none'},
+                                                'height':250,};
+                                            
+                                                // Instantiate and draw the chart.
+                                                var chart = new google.visualization.ColumnChart(document.getElementById('grafica3'));
+                                                chart.draw(data3, options);
+                                            }
+                                            google.charts.setOnLoadCallback(drawChart3);
+                                            
+                                        }
+                                    })
+                                })
+                                </script>
+                        </div>
+                    </div> 
+                </div>
+                <div class="row"> 
+                    <div class="col-md-12"> 
+                        <div class="card">
+                            <div id="grafica4">
+                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                    </script>
+                                    <script type="text/javascript">
+                                        google.charts.load('current', {packages: ['corechart']});
+                                    </script>
+                                    
+                                    
+
+                            </div>
+                                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                                <script language="JavaScript" type="text/javascript">
+                                
+                                $(document).ready(function(){
+                                    $.ajax({
+                                        url: 'DataServlet',
+                                        data: {
+                                            type: 'mes',
+                                            tpv: '${user.business.tpv.id}'
+                                        },
+                                        method: 'GET',
+                                        success: function (response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var data = [
+                                                ['Mes', 'Importe']
+                                            ]
+                                            for (var i = 0; i < Object.keys(response).length; i++) {
+                                                data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                                console.log(data)
+                                            }               
+                                            function drawChart4() {
+                                                // Define the chart to be drawn.
+                                                var data4 = google.visualization.arrayToDataTable(data);
+                                            
+                                                var options = {title: 'Ingresos por mes',
+                                                legend: {position: 'none'},
+                                                'height':400,};
+                                            
+                                                // Instantiate and draw the chart.
+                                                var chart = new google.visualization.ColumnChart(document.getElementById('grafica4'));
+                                                chart.draw(data4, options);
+                                            }
+                                            google.charts.setOnLoadCallback(drawChart4);
+                                            
+                                        }
+                                    })
+                                })
+                                </script>
+                            
+                        </div>
+                    </div> 
+                </div> 
+                <div class="row"> 
+                    <div class="col-md-12"> 
+                        <div class="card">
+                            <div id="grafica5">
+                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                    </script>
+                                    <script type="text/javascript">
+                                        google.charts.load('current', {packages: ['corechart']});
+                                    </script>
+                                    
+                                  
+
+                             </div>
+                                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                                <script language="JavaScript" type="text/javascript">
+                                
+                                $(document).ready(function(){
+                                    $.ajax({
+                                        url: 'DataServlet',
+                                        data: {
+                                            type: 'transmes',
+                                            tpv: '${user.business.tpv.id}'
+                                        },
+                                        method: 'GET',
+                                        success: function (response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var data = [
+                                                ['Mes', 'Importe']
+                                            ]
+                                            for (var i = 0; i < Object.keys(response).length; i++) {
+                                                data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                                console.log(data)
+                                            }               
+                                            function drawChart5() {
+                                                // Define the chart to be drawn.
+                                                var data5 = google.visualization.arrayToDataTable(data);
+                                            
+                                                var options = {title: 'Transacciones por mes',
+                                                legend: {position: 'none'},
+                                                'height':400,};
+                                            
+                                                // Instantiate and draw the chart.
+                                                var chart = new google.visualization.ColumnChart(document.getElementById('grafica5'));
+                                                chart.draw(data5, options);
+                                            }
+                                            google.charts.setOnLoadCallback(drawChart5);
+                                            
+                                        }
+                                    })
+                                })
+                                </script>
+                            
+                        </div>
+                    </div> 
+                </div> 
+<shiro:hasRole name="premium">
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                                <div id="grafica6">
+                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                    </script>
+                                    <script type="text/javascript">
+                                        google.charts.load('current', {packages: ['corechart']});
+                                    </script>
+                                    
+                                    
+                                </div>
+                                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                                <script language="JavaScript" type="text/javascript">
+                                
+                                $(document).ready(function(){
+                                    $.ajax({
+                                        url: 'DataServlet',
+                                        data: {
+                                            type: 'edad',
+                                            tpv: '${user.business.tpv.id}'
+                                        },
+                                        method: 'GET',
+                                        success: function (response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var data = [
+                                                ['Edad', 'Clientes']
+                                            ]
+                                            for (var i = 0; i < Object.keys(response).length; i++) {
+                                                data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                                console.log(data)
+                                            }               
+                                            function drawChart6() {
+                                                // Define the chart to be drawn.
+                                                var data6 = google.visualization.arrayToDataTable(data);
+                                            
+                                                var options = {title: 'Clientes por edad',
+                                                'height':400,};
+                                            
+                                                // Instantiate and draw the chart.
+                                                var chart = new google.visualization.ColumnChart(document.getElementById('grafica6'));
+                                                chart.draw(data6, options);
+                                            }
+                                            google.charts.setOnLoadCallback(drawChart6);
+                                            
+                                        }
+                                    })
+                                })
+                                </script> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row">                 
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div id="grafica7">
+                                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                </script>
+                                <script type="text/javascript">
+                                    google.charts.load('current', {packages: ['corechart']});
+                                </script>
+                                
+                                
+
+                            </div>
+                            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                            <script language="JavaScript" type="text/javascript">
+                            
+                            $(document).ready(function(){
+                                $.ajax({
+                                    url: 'DataServlet',
+                                    data: {
+                                        type: 'zipcode',
+                                        tpv: '${user.business.tpv.id}'
+                                    },
+                                    method: 'GET',
+                                    success: function (response) {
+                                        console.log(response);
+                                        response = JSON.parse(response);
+                                        var data = [
+                                            ['Codigo Postal', 'Cantidad']
+                                        ]
+                                        for (var i = 0; i < Object.keys(response).length; i++) {
+                                            data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                            console.log(data)
+                                        }               
+                                        function drawChart7() {
+                                            // Define the chart to be drawn.
+                                            var data7 = google.visualization.arrayToDataTable(data);
+                                        
+                                            var options = {title: 'Transacciones por código postal del cliente',
+                                            'height':400,};
+                                        
+                                            // Instantiate and draw the chart.
+                                            var chart = new google.visualization.PieChart(document.getElementById('grafica7'));
+                                            chart.draw(data7, options);
+                                        }
+                                        google.charts.setOnLoadCallback(drawChart7);
+                                        
+                                    }
+                                })
+                            })
+                            </script>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card ">
+                                <div id="grafica8">
+                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                    </script>
+                                    <script type="text/javascript">
+                                        google.charts.load('current', {packages: ['corechart']});
+                                    </script>
+                                    
+                                    
+
+                                </div>
+                                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                                <script language="JavaScript" type="text/javascript">
+                                
+                                $(document).ready(function(){
+                                    $.ajax({
+                                        url: 'DataServlet',
+                                        data: {
+                                            type: 'genero',
+                                            tpv: '${user.business.tpv.id}'
+                                        },
+                                        method: 'GET',
+                                        success: function (response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var data = [
+                                                ['Genero', 'Cantidad']
+                                            ]
+                                            for (var i = 0; i < Object.keys(response).length; i++) {
+                                                data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                                console.log(data)
+                                            }               
+                                            function drawChart8() {
+                                                // Define the chart to be drawn.
+                                                var data8 = google.visualization.arrayToDataTable(data);
+                                            
+                                                var options = {title: 'Transacciones por género',
+                                                
+                                                'height':400,
+                                                pieHole:0.4,};
+                                            
+                                                // Instantiate and draw the chart.
+                                                var chart = new google.visualization.PieChart(document.getElementById('grafica8'));
+                                                chart.draw(data8, options);
+                                            }
+                                            google.charts.setOnLoadCallback(drawChart8);
+                                            
+                                        }
+                                    })
+                                })
+                                </script>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card ">
+                            <div id="grafica9">
+                                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                </script>
+                                <script type="text/javascript">
+                                    google.charts.load('current', {packages: ['corechart']});
+                                </script>
+                                
+                                
+
+                            </div>
+                            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                            <script language="JavaScript" type="text/javascript">
+                            
+                            $(document).ready(function(){
+                                $.ajax({
+                                    url: 'DataServlet',
+                                    data: {
+                                        type: 'fidelidad',
+                                        tpv: '${user.business.tpv.id}'
+                                    },
+                                    method: 'GET',
+                                    success: function (response) {
+                                        console.log(response);
+                                        response = JSON.parse(response);
+                                        var data = [
+                                            ['Cliente', 'Cantidad']
+                                        ]
+                                        for (var i = 0; i < Object.keys(response).length; i++) {
+                                            data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                            console.log(data)
+                                        }               
+                                        function drawChart9() {
+                                            // Define the chart to be drawn.
+                                            var data9 = google.visualization.arrayToDataTable(data);
+                                        
+                                            var options = {title: 'Transacciones por cliente',
+                                            legend: {position: 'none'},
+                                            'height':400,};
+                                        
+                                            // Instantiate and draw the chart.
+                                            var chart = new google.visualization.PieChart(document.getElementById('grafica9'));
+                                            chart.draw(data9, options);
+                                        }
+                                        google.charts.setOnLoadCallback(drawChart9);
+                                        
+                                    }
+                                })
+                            })
+                            </script>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12"> 
+                        <div class="card">
+                            <div id="grafica10">
+                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+                                    </script>
+                                    <script type="text/javascript">
+                                        google.charts.load('current', {packages: ['corechart']});
+                                    </script>
+                                    
+                             
+                            </div>
+                                <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                                <script language="JavaScript" type="text/javascript">
+                                
+                                $(document).ready(function(){
+                                    $.ajax({
+                                        url: 'DataServlet',
+                                        data: {
+                                            type: 'hora',
+                                            tpv: '${user.business.tpv.id}'
+                                        },
+                                        method: 'GET',
+                                        success: function (response) {
+                                            console.log(response);
+                                            response = JSON.parse(response);
+                                            var data = [
+                                                ['Hora', 'Importe']
+                                            ]
+                                            for (var i = 0; i < Object.keys(response).length; i++) {
+                                                data.push([Object.keys(response)[i], Object.values(response)[i]])
+                                                console.log(data)
+                                            }               
+                                            function drawChart10() {
+                                                // Define the chart to be drawn.
+                                                var data10 = google.visualization.arrayToDataTable(data);
+                                            
+                                                var options = {title: 'Ingresos por hora',
+                                                legend: {position: 'none'},
+                                                'height':400,};
+                                            
+                                                // Instantiate and draw the chart.
+                                                var chart = new google.visualization.SteppedAreaChart(document.getElementById('grafica10'));
+                                                chart.draw(data10, options);
+                                            }
+                                            google.charts.setOnLoadCallback(drawChart10);
+                                            
+                                        }
+                                    })
+                                })
+                                </script>
+                            
+                        </div>
+                    </div> 
+                </div> 
+</shiro:hasRole>
+            </div>
+        </div>
+
     </div>
 </div>
 
 
-<div id="graficas">
-
-    <div id="grafica1">
-
-
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
-
-        </script>
-        <script type="text/javascript">
-            google.charts.load('current', {packages: ['corechart']});
-        </script>
-
-
-        <script language="JavaScript" type="text/javascript">
-
-            function drawChart1() {
-                // Define the chart to be drawn.
-                var data1 = google.visualization.arrayToDataTable([
-                    ['Mes', 'Ventas'],
-                    ['Septiembre', 88000],
-                    ['Octubre', 98000],
-                    ['Noviembre', 100000],
-                    ['Diciembre', 130000],
-                    ['Enero', 110000],
-                    ['Febrero', 105000],
-                    ['Marzo', 111000],
-                    ['Abril', 117000],
-                    ['Mayo', 100000]
-
-                ]);
-                var options = {
-                    title: 'Ingresos por mes de mi empresa',
-                    'width': 1200,
-                    'height': 400,
-                };
-
-                // Instantiate and draw the chart.
-                var chart = new google.visualization.ColumnChart(document.getElementById('grafica1'));
-                chart.draw(data1, options);
-            }
-
-            google.charts.setOnLoadCallback(drawChart1);
-        </script>
-    </div>
-
-    <div id="grafica2">
-
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
-        </script>
-
-        <script type="text/javascript">
-            google.charts.load('current', {packages: ['corechart']});
-        </script>
-
-        <script language="JavaScript" type="text/javascript">
-        function drawChart2() {
-        // Define the chart to be drawn.
-        var data2 = new google.visualization.DataTable();
-        data2.addColumn('string', 'Día');
-        data2.addColumn('number', 'Ingresos por día');
-        data2.addRows([
-        ['1/01/2019', 2000],
-        ['2/01/2019', 5000],
-        ['3/01/2019', 2700],
-        ['4/01/2019', 4800],
-        ['5/01/2019', 4900],
-        ['6/01/2019', 3800],
-        ['7/01/2019', 2900],
-        ['8/01/2019', 3500],
-        ['9/01/2019', 3600],
-        ['10/01/2019', 3400],
-        ['11/01/2019', 3800],
-        ['12/01/2019', 4000],
-        ['13/01/2019', 4900],
-        ['14/01/2019', 2500],
-        ['15/01/2019', 2100],
-        ['16/01/2019', 4800],
-        ['17/01/2019', 3000],
-        ['18/01/2019', 4850],
-        ['19/01/2019', 5100],
-        ['20/01/2019', 3500],
-        ['21/01/2019', 2000],
-        ['22/01/2019', 4000],
-        ['23/01/2019', 2500],
-        ['24/01/2019', 2100],
-        ['25/01/2019', 4800],
-        ['26/01/2019', 3000],
-        ['27/01/2019', 4850],
-        ['28/01/2019', 5100],
-        ['29/01/2019', 3500],
-        ['30/01/2019', 3598],
-        ['31/01/2019', 4000],
-        ['1/02/2019', 2000],
-        ['2/02/2019', 5000],
-        ['3/02/2019', 2700],
-        ['4/02/2019', 4800],
-        ['5/02/2019', 4900],
-        ['6/02/2019', 3578],
-        ['7/02/2019', 2900],
-        ['8/02/2019', 3500],
-        ['9/02/2019', 3600],
-        ['10/02/2019', 3400],
-        ['11/02/2019', 3800],
-        ['12/02/2019', 4000],
-        ['13/02/2019', 4900],
-        ['14/02/2019', 2500],
-        ['15/02/2019', 2100],
-        ['16/02/2019', 4800],
-        ['17/02/2019', 3000],
-        ['18/02/2019', 4850],
-        ['19/02/2019', 5100],
-        ['20/02/2019', 3500],
-        ['21/02/2019', 2000],
-        ['22/02/2019', 4000],
-        ['23/02/2019', 2500],
-        ['24/02/2019', 2259],
-        ['25/02/2019', 4800],
-        ['26/02/2019', 3000],
-        ['27/02/2019', 4850],
-        ['28/02/2019', 5100],
-        ['1/03/2019', 3500],
-        ['2/03/2019', 5000],
-        ['3/03/2019', 2700],
-        ['4/03/2019', 2000],
-        ['5/03/2019', 4900],
-        ['6/03/2019', 3800],
-        ['7/03/2019', 2900],
-        ['8/03/2019', 4895],
-        ['9/03/2019', 3600],
-        ['10/03/2019', 3400],
-        ['11/03/2019', 4000],
-        ['12/03/2019', 4000],
-        ['13/03/2019', 3000],
-        ['14/03/2019', 2500],
-        ['15/03/2019', 2300],
-        ['16/03/2019', 4600],
-        ['17/03/2019', 3100],
-        ['18/03/2019', 4850],
-        ['19/03/2019', 5100],
-        ['20/03/2019', 3500],
-        ['21/03/2019', 2000],
-        ['22/03/2019', 4000],
-        ['23/03/2019', 2500],
-        ['24/03/2019', 2100],
-        ['25/03/2019', 4800],
-        ['26/03/2019', 3000],
-        ['27/03/2019', 4850],
-        ['28/03/2019', 2500],
-        ['29/03/2019', 3500],
-        ['30/03/2019', 2000]
-        ]);
-        // Set chart options
-        var options = {'title' : 'Ingresos por día',
-        hAxis: {
-        title: 'Fecha'
-        },
-        vAxis: {
-        title: 'Ingresos'
-        },
-        'width':1200,
-        'height':400,
-        pointsVisible: true
-        };
-        // Instantiate and draw the chart.
-        var chart = new google.visualization.LineChart(document.getElementById('grafica2'));
-        chart.draw(data2, options);
-        }
-        google.charts.setOnLoadCallback(drawChart2);
-       </script>
-    </div>
-
-
-
-    <div id="grafica3">
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
-
-        </script>
-        <script type="text/javascript">
-            google.charts.load('current', {packages: ['corechart']});
-        </script>
-        <script language="JavaScript" type="text/javascript">
-
-            function drawChart3() {
-        // Define the chart to be drawn.
-        var data3 = google.visualization.arrayToDataTable([
-        ['Mes', 'Ventas'],
-        ['Septiembre', 500],
-        ['Octubre', 600],
-        ['Noviembre', 670],
-        ['Diciembre', 710],
-        ['Enero', 700],
-        ['Febrero', 730],
-        ['Marzo', 750],
-        ['Abril', 710],
-        ['Mayo', 640]
-        ]);
-
-        var options = {title: 'Número de transacciones por mes',
-        'width':1200,
-        'height':400,};
-
-        // Instantiate and draw the chart.
-        var chart = new google.visualization.ColumnChart(document.getElementById('grafica3'));
-        chart.draw(data3, options);
-        }
-
-        google.charts.setOnLoadCallback(drawChart3);
-
-        </script>
-        </div>
-
-    </div>
 </body>
+
+    <!--   Core JS Files   -->
+    <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
+	<script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+
+	<!--  Charts Plugin -->
+	<script src="assets/js/chartist.min.js"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="assets/js/bootstrap-notify.js"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+
+    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+	<script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
+
+	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+	<script src="assets/js/demo.js"></script>
+
+	<script type="text/javascript">
+    	$(document).ready(function(){
+
+        	demo.initChartist();
+
+        	$.notify({
+            	icon: 'pe-7s-gift',
+            	message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
+
+            },{
+                type: 'info',
+                timer: 4000
+            });
+
+    	});
+	</script>
+
 </html>
